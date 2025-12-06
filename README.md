@@ -1,98 +1,345 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Google Sign-In & Paystack Payment API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A NestJS-based backend API that provides Google OAuth authentication and Paystack payment integration. This application allows users to authenticate via Google Sign-In and process payments through Paystack.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- 🔐 **Google OAuth 2.0 Authentication**
+  - Secure Google Sign-In integration
+  - User profile management
+  - Token management (access & refresh tokens)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- 💳 **Paystack Payment Integration**
+  - Initialize payment transactions
+  - Verify payment status
+  - Webhook handling for real-time payment updates
+  - Transaction history tracking
 
-## Project setup
+- 📊 **Database Management**
+  - PostgreSQL database with TypeORM
+  - User and transaction entities
+  - Automated migrations
 
+- 📝 **API Documentation**
+  - Swagger/OpenAPI documentation
+  - Interactive API explorer at `/api`
+
+## Tech Stack
+
+- **Framework**: NestJS 11.x
+- **Database**: PostgreSQL with TypeORM
+- **Authentication**: Google OAuth 2.0 (Passport.js)
+- **Payment Gateway**: Paystack
+- **Validation**: class-validator, class-transformer
+- **Documentation**: Swagger/OpenAPI
+- **Package Manager**: pnpm
+
+## Prerequisites
+
+- Node.js (v16 or higher)
+- PostgreSQL database
+- Google Cloud Console project (for OAuth credentials)
+- Paystack account (for payment processing)
+
+## Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd google-paystack-backend
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+
+3. **Set up environment variables**
+   
+   Create a `.env` file in the root directory with the following variables:
+
+   ```env
+   # Application
+   PORT=3000
+   NODE_ENV=development
+
+   # Database Configuration
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USERNAME=your_db_username
+   DB_PASSWORD=your_db_password
+   DB_NAME=your_db_name
+
+   # Google OAuth
+   GOOGLE_CLIENT_ID=your_google_client_id
+   GOOGLE_CLIENT_SECRET=your_google_client_secret
+   GOOGLE_CALLBACK_URL=http://localhost:3000/auth/google/callback
+
+   # Paystack Configuration
+   PAYSTACK_SECRET_KEY=your_paystack_secret_key
+   PAYSTACK_PUBLIC_KEY=your_paystack_public_key
+   PAYSTACK_API_URL=https://api.paystack.co
+   PAYSTACK_CALLBACK_URL=http://localhost:3000/payments/paystack/callback
+   ```
+
+4. **Set up the database**
+   
+   Ensure PostgreSQL is running and create the database:
+   ```bash
+   createdb your_db_name
+   ```
+
+## Running the Application
+
+### Development Mode
 ```bash
-$ pnpm install
+pnpm run start:dev
 ```
 
-## Compile and run the project
-
+### Production Mode
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+pnpm run build
+pnpm run start:prod
 ```
 
-## Run tests
-
+### Debug Mode
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+pnpm run start:debug
 ```
 
-## Deployment
+The application will start on `http://localhost:3000` (or the port specified in your `.env` file).
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## API Documentation
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+Once the application is running, access the Swagger documentation at:
+```
+http://localhost:3000/api
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## API Endpoints
 
-## Resources
+### Authentication
 
-Check out a few resources that may come in handy when working with NestJS:
+#### **Initiate Google Sign-In**
+```http
+GET /auth/google
+```
+Returns the Google authentication URL for user sign-in.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+**Response:**
+```json
+{
+  "google_auth_url": "https://accounts.google.com/o/oauth2/auth?...",
+  "message": "Use this URL to authenticate with Google"
+}
+```
 
-## Support
+#### **Google OAuth Callback**
+```http
+GET /auth/google/callback?code={authorization_code}
+```
+Handles the Google OAuth callback and creates/updates user in the database.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+**Response:**
+```json
+{
+  "user": {
+    "id": "uuid",
+    "email": "user@example.com",
+    "name": "John Doe",
+    "picture": "https://...",
+    "emailVerified": true
+  },
+  "message": "Authentication successful"
+}
+```
 
-## Stay in touch
+### Payments
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+#### **Initialize Payment**
+```http
+POST /payments/paystack/initiate
+```
+Initialize a new Paystack payment transaction.
 
-## License
+**Request Body:**
+```json
+{
+  "userId": "user-uuid",
+  "amount": 5000,
+  "metadata": {
+    "productId": "prod-123",
+    "orderId": "order-456"
+  }
+}
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+**Response:**
+```json
+{
+  "status": true,
+  "message": "Authorization URL created",
+  "data": {
+    "authorization_url": "https://checkout.paystack.com/...",
+    "access_code": "...",
+    "reference": "..."
+  }
+}
+```
+
+#### **Verify Payment**
+```http
+GET /payments/paystack/verify/:reference
+```
+Verify the status of a payment transaction.
+
+**Response:**
+```json
+{
+  "status": true,
+  "message": "Verification successful",
+  "data": {
+    "reference": "...",
+    "status": "success",
+    "amount": 5000,
+    "paid_at": "2024-01-01T00:00:00Z"
+  }
+}
+```
+
+#### **Get User Transactions**
+```http
+GET /payments/user/:userId/transactions?status=success&limit=10&offset=0
+```
+Retrieve transaction history for a specific user.
+
+#### **Paystack Webhook**
+```http
+POST /payments/paystack/webhook
+```
+Handles Paystack webhook events for real-time payment updates.
+
+## Database Schema
+
+### User Entity
+```typescript
+{
+  id: UUID (PK)
+  googleId: string (unique)
+  email: string (unique)
+  name: string
+  picture: string
+  emailVerified: boolean
+  accessToken: string
+  refreshToken: string
+  createdAt: timestamp
+  updatedAt: timestamp
+}
+```
+
+### Transaction Entity
+```typescript
+{
+  id: UUID (PK)
+  reference: string (unique)
+  amount: decimal
+  status: enum (pending, success, failed, abandoned)
+  currency: string
+  channel: string
+  gatewayResponse: string
+  paidAt: timestamp
+  userId: UUID (FK)
+  metadata: jsonb
+  createdAt: timestamp
+  updatedAt: timestamp
+}
+```
+
+## Testing
+
+```bash
+# Unit tests
+pnpm run test
+
+# E2E tests
+pnpm run test:e2e
+
+# Test coverage
+pnpm run test:cov
+```
+
+## Project Structure
+
+```
+src/
+├── auth/                    # Authentication module
+│   ├── auth.controller.ts   # Google auth endpoints
+│   ├── auth.service.ts      # Google OAuth logic
+│   └── auth.module.ts
+├── payments/                # Payments module
+│   ├── payments.controller.ts  # Payment endpoints
+│   ├── payments.service.ts     # Paystack integration
+│   ├── payments.module.ts
+│   └── dto/
+│       └── initializepay.dto.ts
+├── config/                  # Configuration files
+│   ├── database.config.ts
+│   ├── database.module.ts
+│   ├── google.config.ts
+│   └── paystack.config.ts
+├── entities/                # Database entities
+│   ├── user.entity.ts
+│   └── transaction.entity.ts
+├── app.module.ts           # Root module
+└── main.ts                 # Application entry point
+```
+
+## Configuration
+
+### Google OAuth Setup
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the Google+ API
+4. Create OAuth 2.0 credentials
+5. Add authorized redirect URIs: `http://localhost:3000/auth/google/callback`
+6. Copy the Client ID and Client Secret to your `.env` file
+
+### Paystack Setup
+
+1. Sign up at [Paystack](https://paystack.com/)
+2. Navigate to Settings > API Keys & Webhooks
+3. Copy your Secret Key and Public Key
+4. Set up webhook URL: `http://your-domain.com/payments/paystack/webhook`
+5. Add keys to your `.env` file
+
+## Security Considerations
+
+- Store sensitive keys in environment variables
+- Use HTTPS in production
+- Validate webhook signatures from Paystack
+- Implement rate limiting for API endpoints
+- Use secure session management
+- Keep dependencies updated
+
+## Scripts
+
+```bash
+# Development
+pnpm run start:dev          # Start with hot-reload
+pnpm run start:debug        # Start in debug mode
+
+# Production
+pnpm run build              # Build the project
+pnpm run start:prod         # Start production server
+
+# Code Quality
+pnpm run lint               # Run ESLint
+pnpm run format             # Format code with Prettier
+
+# Testing
+pnpm run test               # Run unit tests
+pnpm run test:watch         # Run tests in watch mode
+pnpm run test:cov           # Generate coverage report
+pnpm run test:e2e           # Run e2e tests
+```
