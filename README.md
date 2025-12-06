@@ -78,7 +78,7 @@ A NestJS-based backend API that provides Google OAuth authentication and Paystac
    # Paystack Configuration
    PAYSTACK_SECRET_KEY=your_paystack_secret_key
    PAYSTACK_PUBLIC_KEY=your_paystack_public_key
-   PAYSTACK_API_URL=https://api.paystack.co
+   PAYSTACK_WEBHOOK_SECRET=https://api.paystack.co
    PAYSTACK_CALLBACK_URL=http://localhost:3000/payments/paystack/callback
    ```
 
